@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadFactory;
 import okio.Buffer;
+import okio.BufferedSource;
 import okio.ByteString;
 import okio.Source;
 
@@ -229,4 +230,11 @@ public final class Util {
   }
 
   private static final RetryableSink EMPTY_SINK = new RetryableSink(0);
+
+  public static void readFully(BufferedSource source, byte[] sink) throws IOException {
+    int read = 0;
+    do {
+      read += source.read(sink, read, sink.length - read);
+    } while (read < sink.length);
+  }
 }
